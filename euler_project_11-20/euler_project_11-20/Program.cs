@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace euler_project_11_20
+﻿namespace euler_project_11_20
 {
     class Program
     {
