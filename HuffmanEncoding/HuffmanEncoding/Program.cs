@@ -10,6 +10,12 @@ namespace HuffmanEncoding
     {
         static void Main(string[] args)
         {
+            
+            string[] input = System.IO.File.ReadAllLines(@"C:\Users\DannePanne\Documents\Arbeten\c-sharp\HuffmanEncoding\HuffmanEncoding\res\dictionary.txt");
+
+            Dictionary<char, int> freqTable = Encoding.BuildFreqTable(input);
+
+            Console.ReadLine();
         }
     }
 }
