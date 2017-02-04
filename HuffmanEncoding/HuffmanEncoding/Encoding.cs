@@ -31,6 +31,7 @@ namespace HuffmanEncoding
             return freqTable;
         }
 
+
         private static List<char[]> makeToCharList(string[] input)
         {
             List<char[]> result = new List<char[]>();

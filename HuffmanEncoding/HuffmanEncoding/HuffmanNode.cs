@@ -7,16 +7,46 @@ using System.Threading.Tasks;
 
 namespace HuffmanEncoding
 {
-    class HuffmanNode : IEnumerable<HuffmanNode>
+    class HuffmanNode
     {
-        public IEnumerator<HuffmanNode> GetEnumerator()
+        public int character;
+        public int count;
+        public HuffmanNode zero;
+        public HuffmanNode one;
+
+        public HuffmanNode(int character, int count)
         {
-            throw new NotImplementedException();
+            Character = character;
+            Count = count;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public int Character
         {
-            throw new NotImplementedException();
+            get { return character;  }
+            set { character = value; }
+        }
+
+        public int Count
+        {
+            get { return Count; }
+            set { count = value; }
+        }
+
+        public HuffmanNode Zero
+        {
+            get { return zero; }
+            set { zero = value; }
+        }
+
+        public HuffmanNode One
+        {
+            get { return one; }
+            set { one = value; }
+        }
+
+        public bool IsLeaf()
+        {
+            return Zero == null && One == null;
         }
     }
 }

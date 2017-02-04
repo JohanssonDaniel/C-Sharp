@@ -15,6 +15,10 @@ namespace HuffmanEncoding
 
             Dictionary<char, int> freqTable = Encoding.BuildFreqTable(input);
 
+            var sortedDict = from entry in freqTable
+                             orderby entry.Value descending
+                             select entry;
+
             Console.ReadLine();
         }
     }
