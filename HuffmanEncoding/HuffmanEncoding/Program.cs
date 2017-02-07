@@ -15,9 +15,16 @@ namespace HuffmanEncoding
 
             Dictionary<char, int> freqTable = Encoding.BuildFreqTable(input);
 
-            var sortedDict = from entry in freqTable
-                             orderby entry.Value descending
-                             select entry;
+            List<KeyValuePair<char, int>> freqList = freqTable.ToList();
+
+            freqList.Sort(
+                delegate(KeyValuePair<char, int> kvp1,
+                KeyValuePair<char, int> kvp2){
+                    return kvp1.Value.CompareTo(kvp2.Value); 
+                });
+            Encoding.BuildEncodingTree(freqList);
+
+
 
             Console.ReadLine();
         }

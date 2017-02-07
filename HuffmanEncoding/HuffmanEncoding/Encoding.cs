@@ -8,6 +8,8 @@ namespace HuffmanEncoding
 {
     class Encoding
     {
+        private const char NOT_A_CHAR = ' ';
+
         public static Dictionary<char, int> BuildFreqTable(string[] input)
         {
             Dictionary<char, int> freqTable = new Dictionary<char, int>();
@@ -30,7 +32,29 @@ namespace HuffmanEncoding
             }
             return freqTable;
         }
+        
+        public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
+        {
+            Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
 
+            foreach (KeyValuePair<char, int> kvp in freqList)
+            {
+                HuffmanNode node = new HuffmanNode(kvp.Key, kvp.Value, null, null);
+                treeLevels.Enqueue(node);
+            }
+
+            while (treeLevels.Count() != 1)
+            {
+                HuffmanNode left = treeLevels.Dequeue();
+                HuffmanNode right = treeLevels.Dequeue();
+                int sum = left.Count + right.Count;
+                HuffmanNode node = new HuffmanNode(NOT_A_CHAR, sum, left, right);
+
+                treeLevels.Enqueue(node);
+            }
+
+            return treeLevels.Dequeue();
+        }
 
         private static List<char[]> makeToCharList(string[] input)
         {
