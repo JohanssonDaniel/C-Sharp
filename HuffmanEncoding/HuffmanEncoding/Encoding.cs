@@ -10,13 +10,14 @@ namespace HuffmanEncoding
     {
         private const char NOT_A_CHAR = ' ';
 
+        //Counts the frequency of all the characters in a string
         public static Dictionary<char, int> BuildFreqTable(string[] input)
         {
             Dictionary<char, int> freqTable = new Dictionary<char, int>();
 
-            List<char[]> inputAsChar = makeToCharList(input);
+            //List<char[]> inputAsChar = makeToCharList(input);
 
-            foreach (char[] line in inputAsChar)
+            foreach (string line in input)
             {
                 foreach (char letter in line)
                 {
@@ -32,7 +33,32 @@ namespace HuffmanEncoding
             }
             return freqTable;
         }
-        
+
+        public static Dictionary<int, string> BuildMap(HuffmanNode encodingTree)
+        {
+            Dictionary<int, string> encodingMap = new Dictionary<int, string>();
+            string code = "";
+            EncodingHelper(encodingTree, code, ref encodingMap);
+            return encodingMap;
+        }
+
+        private static void EncodingHelper(HuffmanNode encodingTree, string code, ref Dictionary<int, string> encodingMap)
+        {
+            if (encodingTree.IsLeaf())
+            {
+                encodingMap.Add(encodingTree.Character, code);
+            }
+            else
+            {
+                code += "0";
+                EncodingHelper(encodingTree.Zero, code, ref encodingMap);
+                //Remove the added 0 from before
+                code = code.Remove(code.Length - 1);
+                code += "1";
+                EncodingHelper(encodingTree.One, code, ref encodingMap);
+            }
+        }
+
         public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
         {
             Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
@@ -52,7 +78,6 @@ namespace HuffmanEncoding
 
                 treeLevels.Enqueue(node);
             }
-
             return treeLevels.Dequeue();
         }
 

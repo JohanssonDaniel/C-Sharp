@@ -22,7 +22,9 @@ namespace HuffmanEncoding
                 KeyValuePair<char, int> kvp2){
                     return kvp1.Value.CompareTo(kvp2.Value); 
                 });
-            Encoding.BuildEncodingTree(freqList);
+            HuffmanNode node = Encoding.BuildEncodingTree(freqList);
+
+            Dictionary<int, string> map = Encoding.BuildMap(node);
 
 
 
