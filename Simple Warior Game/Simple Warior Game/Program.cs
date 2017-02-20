@@ -10,6 +10,9 @@ namespace Simple_Warior_Game
     {
         static void Main(string[] args)
         {
+            Battle.StartFight();
+
+            Console.ReadLine();
         }
     }
 }
