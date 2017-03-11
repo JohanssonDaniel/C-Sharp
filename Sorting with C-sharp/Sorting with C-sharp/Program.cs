@@ -20,7 +20,7 @@ namespace Sorting_with_C_sharp
                 Console.Write(item + " ");
             }
 
-            if (list.Equals(correctList)) Console.WriteLine("Sort successful");
+            if (Enumerable.SequenceEqual(list, correctList)) Console.WriteLine("Sort successful");
             else Console.WriteLine("Sort failed");
 
             Console.ReadLine();
