@@ -14,27 +14,26 @@ namespace Djikstras
         const char MUD      = ' ';
         const char MONSTER  = 'm';
 
-        private Dictionary<char, int> cost = new Dictionary<char, int>() { { START, 0 }, { GOAL, 0 }, { MUD, 1 }, { MONSTER, 11 } };
+        public Dictionary<char, int> cost = new Dictionary<char, int>() { { START, 0 }, { GOAL, 1 }, { MUD, 1 }, { MONSTER, 11 } };
 
-        private List<Node> nodes = new List<Node>();
-        private List<Edge> edges = new List<Edge>();
+        public Node[][] nodes;
+        public List<Edge> edges = new List<Edge>();
 
-        private Node Start, Goal;
+        public Node Start { get; set; }
+            
+        public Node Goal { get; set; }
 
-        private char[][] grid;
+        private char[][] Grid { get; set; }
 
         public Graph(string[] file)
         {
-            grid = createGrid(file);
-            nodes = createNodeList(grid);
-            edges = createEdgeList(nodes);
+            Grid = createGrid(file);
         }
 
         private char[][] createGrid(string[] file)
         {
             // Assuming here that every maze will be quadratic, the length of the col is same for every row
             int numOfRows = file.Length;
-            //int numOfCols = file[0].Length;
 
             // Init the graph, it will contain the same amount of rows as the input
             char[][] grid = new char[numOfRows][];
@@ -48,17 +47,21 @@ namespace Djikstras
             return grid;
         }
 
-        private List<Node> createNodeList(char[][] grid)
+        public void createNodes()
         {
-            List<Node> nodeList = new List<Node>();
-            for (int row = 0; row < grid.Length; row++)
+            if (Grid.Length == 0)
             {
-                for (int col = 0; col < grid.Length; col++)
+                Console.WriteLine("You have to create the grid first...");
+            }
+            else
+            {
+                initNodeGrid();
+                for (int row = 0; row < Grid.Length; row++)
                 {
-                    char mazeCharacter = grid[row][col];
-                    if (!(mazeCharacter.Equals(WALL)))
+                    for (int col = 0; col < Grid[row].Length; col++)
                     {
-                        Node tempNode = new Node(cost[mazeCharacter], mazeCharacter, col, row);
+                        char mazeCharacter = Grid[row][col];
+                        Node tempNode = new Node(mazeCharacter, col, row);
                         if (mazeCharacter.Equals(START))
                         {
                             Start = tempNode;
@@ -67,109 +70,80 @@ namespace Djikstras
                         {
                             Goal = tempNode;
                         }
-                        nodeList.Add(tempNode);
+                        nodes[row][col] = tempNode;
                     }
                 }
             }
-            return nodeList;
         }
 
-        private List<Edge> createEdgeList(List<Node> nodes)
-        {
-            List<Edge> edgeList = new List<Edge>();
-            foreach (Node node in nodes)
+        private void initNodeGrid() {
+            nodes = new Node[Grid.Length][];
+            for (int i = 0; i < Grid.Length; i++)
             {
-                foreach (Node tempNode in nodes)
-                {
-                    if (isNeighbour(node, tempNode) && !edgeList.Contains(new Edge(tempNode, node)))
-                    {
-                        Edge tempEdge = new Edge(node, tempNode);
-                        edgeList.Add(tempEdge);
-                    }
-                }
+                nodes[i] = new Node[Grid[i].Length];
             }
-            return edgeList;
         }
 
-        public List<Node> findShortestPath()
+        public void createEdges()
         {
-            List<Node> Q = new List<Node>();
-
-            foreach (Node node in nodes)
+            if (nodes.Length == 0)
             {
-                node.PreviousNode = null;
-                Q.Add(node);
+                Console.WriteLine("You have to create the nodes first...");
             }
-
-            while (Q.Any())
+            else
             {
-                Node u = findCheapestNode(Q);
-                Q.Remove(u);
-                foreach (Node v in Q)
+                if (edges.Any()) edges.Clear();
+                for (int row = 0; row < nodes.Length; row++)
                 {
-                    if (isNeighbour(u,v))
+                    for (int col = 0; col < nodes[row].Length; col++)
                     {
-                        int alt = u.Cost + length(u, v);
-                        if (alt < v.Cost)
+                        Node node = nodes[row][col];
+                        if (!node.TypeOfNode.Equals(WALL))
                         {
-                            v.Cost = alt;
-                            v.PreviousNode = u;
+                            int x = node.X;
+                            int y = node.Y;
+                            int[] xValues = { x, x + 1, x, x - 1 };
+                            int[] yValues = { y - 1, y, y + 1, y };
+
+                            for (int i = 0; i < xValues.Length; i++)
+                            {
+                                if (inBounds(xValues[i], yValues[i]))
+                                {
+                                    Node tempNode = nodes[yValues[i]][xValues[i]];
+                                    if (tempNode.TypeOfNode != WALL)
+                                    {
+                                        Edge tempEdge = new Edge(node, tempNode);
+                                        tempEdge.Weight = cost[tempNode.TypeOfNode];
+                                        edges.Add(tempEdge);
+                                        node.Edges.Add(tempEdge);
+                                        tempNode.Edges.Add(tempEdge);
+                                    }
+                                }
+                            }
                         }
                     }
-                }  
-            }
-            return Q;
-        }
-
-        private int length(Node u, Node v)
-        {
-            return u.Cost + cost[v.TypeOfNode];
-        }
-
-        private Node findCheapestNode(List<Node> q)
-        {
-            Node temp = q[0];
-            foreach (Node node in q)
-            {
-                if (node.Cost < temp.Cost)
-                {
-                    temp = node;
                 }
             }
-            return temp;
         }
 
-        
-
-        
-
-        private bool isNeighbour(Node node, Node temp)
+        private bool inBounds(int v1, int v2)
         {
-            int x = node.X;
-            int y = node.Y;
+            return (v1 > 0 && v1 < Grid.Length) && (v2 > 0 && v2 < Grid.Length);
+        }
 
-            int[] xValues = { x, x + 1, x, x - 1 };
-            int[] yValues = { y - 1, y, y + 1, y };
-
-            for (int i = 0; i < xValues.Length; i++)
+        public void printGraph() {
+            if (nodes != null)
             {
-                if ((xValues[i] == temp.X) && (yValues[i] == temp.Y))
+                for (int row = 0; row < nodes.Length; row++)
                 {
-                    return true;
+                    for (int col = 0; col < nodes[row].Length; col++)
+                    {
+                        Console.Write(nodes[row][col].TypeOfNode);
+                    }
+                    Console.WriteLine();
                 }
             }
-            return false;
         }
 
-
-        
-
-        public void PrintGraph()
-        {
-            foreach (Edge edge in edges)
-            {
-                Console.WriteLine(edge.ToString());
-            }
-        }
     }
 }

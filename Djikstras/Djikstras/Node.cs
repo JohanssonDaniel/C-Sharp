@@ -8,6 +8,10 @@ namespace Djikstras
 {
     class Node : IEquatable<Node>
     {
+        private const int MAXNEIGHBOURS = 4;
+
+        public List<Edge> Edges { get; set; }
+
         public int Cost {get; set;}
 
         public bool Visited { get; set; }
@@ -22,10 +26,10 @@ namespace Djikstras
         public Node PreviousNode { get; set; }
         private static int id = 0;
 
-        public Node(int cost, char type, int x, int y)
+        public Node(char type, int x, int y)
         {
-            Cost = cost;
             TypeOfNode = type;
+            Edges = new List<Edge>(MAXNEIGHBOURS);
             X = x;
             Y = y;
             NodeID = id++;
