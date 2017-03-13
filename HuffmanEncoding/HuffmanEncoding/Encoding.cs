@@ -34,6 +34,18 @@ namespace HuffmanEncoding
             return freqTable;
         }
 
+        private static void EncodeData(string[] input, Dictionary<int, string> map, string filePath)
+        {
+            foreach (string line in input)
+            {
+                string tempCharacter;
+                foreach (char character in line)
+                {
+                    
+                }
+            }
+        }
+
         public static Dictionary<int, string> BuildMap(HuffmanNode encodingTree)
         {
             Dictionary<int, string> encodingMap = new Dictionary<int, string>();
