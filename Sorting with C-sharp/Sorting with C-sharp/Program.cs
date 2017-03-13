@@ -10,10 +10,10 @@ namespace Sorting_with_C_sharp
     {
         static void Main(string[] args)
         {
-            int[] list = { 3, 7, 4, 9, 5, 2, 6, 1 };
-            int[] correctList = { 1, 2, 3, 4, 5, 6, 7, 9 };
+            List<int> list = new List<int>{ 3, 7, 4, 9, 5, 2, 6, 1 };
+            List<int> correctList = new List<int>{ 1, 2, 3, 4, 5, 6, 7, 9 };
 
-            list = SelectionSort.Sort(list);
+            list = MergeSort.Sort(list);
 
             foreach (int item in list)
             {
