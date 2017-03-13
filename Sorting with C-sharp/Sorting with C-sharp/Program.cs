@@ -13,7 +13,7 @@ namespace Sorting_with_C_sharp
             int[] list = { 3, 7, 4, 9, 5, 2, 6, 1 };
             int[] correctList = { 1, 2, 3, 4, 5, 6, 7, 9 };
 
-            list = InsertionSort.Sort(list);
+            list = SelectionSort.Sort(list);
 
             foreach (int item in list)
             {
