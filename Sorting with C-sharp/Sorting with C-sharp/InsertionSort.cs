@@ -8,20 +8,20 @@ namespace Sorting_with_C_sharp
 {
     class InsertionSort 
     {
-        public static int[] Sort(int[] list)
+        public static List<int> Sort(List<int> a)
         {
-            for (int i = 1; i < list.Length; i++)
+            for (int i = 1; i < a.Count; i++)
             {
                 int j = i;
-                while (j > 0 && list[j - 1] > list[j])
+                while (j > 0 && a[j - 1] > a[j])
                 {
-                    int temp = list[j - 1];
-                    list[j - 1] = list[j];
-                    list[j] = temp;
+                    int temp = a[j - 1];
+                    a[j - 1] = a[j];
+                    a[j] = temp;
                     j--;
                 }
             }
-            return list;
+            return a;
         } 
     }
 }
