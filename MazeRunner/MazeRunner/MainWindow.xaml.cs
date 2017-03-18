@@ -24,7 +24,7 @@ namespace MazeRunner
     {
         Random rnd = new Random();                  // Generate x and y coord 
         TimeSpan MODERATE = new TimeSpan(0,0,1);    // Update every second
-
+        int objectIndex = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,11 +34,17 @@ namespace MazeRunner
             // Sets the tick interval and starts the timer
             timer.Interval = MODERATE;
             timer.Start();
+
             string[] file = System.IO.File.ReadAllLines("../../res/maze3.txt");
-            foreach (string line in file)
+
+            Graph maze = new Graph(file);
+
+            for (int row = 0; row < maze.Grid.Length; row++)
             {
-                FileText.AppendText(line);
-                FileText.AppendText("\n");
+                for (int col = 0; col < maze.Grid[row].Length; col++)
+                {
+                    paintMazeObject(row, col, maze.Grid[row][col]);
+                }
             }
         }
         // Generate random x and y coord and display them at the window title
@@ -48,18 +54,37 @@ namespace MazeRunner
             int y = rnd.Next(0,9);
             this.Title = "x:" + x.ToString() + "y:" + y.ToString(); 
         }
-        private void paintMazeObject()
+        private void paintMazeObject(int y, int x, char mazeObject)
         {
             Rectangle rectangle = new Rectangle();
-
-            rectangle.Fill = Brushes.Black;
+            switch (mazeObject)
+            {
+                case 'S':
+                    rectangle.Fill = Brushes.Blue;
+                    break;
+                case 'm':
+                    rectangle.Fill = Brushes.Red;
+                    break;
+                case ' ':
+                    rectangle.Fill = Brushes.White;
+                    break;
+                case 'G':
+                    rectangle.Fill = Brushes.Green;
+                    break;
+                case '#':
+                    rectangle.Fill = Brushes.Black;
+                    break;   
+                default:
+                    break;
+            }
+            
             rectangle.Height = 10;
             rectangle.Width = 10;
 
-            Canvas.SetTop(rectangle, 10);
-            Canvas.SetLeft(rectangle, 10);
+            Canvas.SetTop(rectangle, y * 10);
+            Canvas.SetLeft(rectangle, x * 10);
 
-            MazeCanvas.Children.Insert(0, rectangle);
+            MazeCanvas.Children.Insert(objectIndex++, rectangle);
         }
     }
 }
