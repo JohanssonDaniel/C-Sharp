@@ -24,16 +24,22 @@ namespace MazeRunner
     {
         Random rnd = new Random();                  // Generate x and y coord 
         TimeSpan MODERATE = new TimeSpan(0,0,1);    // Update every second
+
         public MainWindow()
         {
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
             // The timer inits timerTick() as an eventhandler
-            timer.Tick += new EventHandler(timerTick);
+            //timer.Tick += new EventHandler(timerTick);
             // Sets the tick interval and starts the timer
             timer.Interval = MODERATE;
             timer.Start();
-            paintMazeObject();
+            string[] file = System.IO.File.ReadAllLines("../../res/maze3.txt");
+            foreach (string line in file)
+            {
+                FileText.AppendText(line);
+                FileText.AppendText("\n");
+            }
         }
         // Generate random x and y coord and display them at the window title
         private void timerTick(Object sender, EventArgs e)

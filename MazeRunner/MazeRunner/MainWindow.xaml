@@ -8,8 +8,9 @@
         Title="MazeRunner" Height="500" Width="500" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="471"/>
         </Grid.RowDefinitions>
         <Canvas x:Name="MazeCanvas" HorizontalAlignment="Left" Height="244" VerticalAlignment="Top" Width="400" Margin="50,10" Background="White"/>
+        <TextBox x:Name="FileText" HorizontalAlignment="Left" Height="186" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Margin="50,275,0,-194"/>
     </Grid>
 </Window>
