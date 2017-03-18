@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Djikstras;
+using static Djikstras.Djikstras;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
@@ -115,10 +116,13 @@ namespace MazeRunner
                     rectangle.Fill = Brushes.White;
                     break;
                 case 'G':
-                    rectangle.Fill = Brushes.Green;
+                    rectangle.Fill = Brushes.Yellow;
                     break;
                 case '#':
                     rectangle.Fill = Brushes.Black;
+                    break;
+                case 'w':
+                    rectangle.Fill = Brushes.Green;
                     break;
                 default:
                     break;
@@ -132,12 +136,16 @@ namespace MazeRunner
 
             MazeCanvas.Children.Insert(objectIndex++, rectangle);
         }
-
+        // Solve the maze with djikstra's algorithm
         private void SolveButton_Click(object sender, RoutedEventArgs e)
         {
-            Djikstras.Djikstras.findShortestPath(ref maze, ref path, out cost);
+            findShortestPath(ref maze, ref path, out cost);
             CostBox.Clear();
             CostBox.AppendText(cost.ToString());
+            foreach (Node node in path)
+            {
+                paintMazeObject(node.Y, node.X, 'w');
+            }
         }
     }
 }
