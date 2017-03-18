@@ -45,20 +45,6 @@ namespace MazeRunner
             timer.Interval = MODERATE;
             timer.Start();
 
-            string[] file = System.IO.File.ReadAllLines("../../res/maze2.txt");
-
-            Graph maze = new Graph(file);
-            // Set the scaling of the rectangles
-            objectHeight = MazeCanvas.Height / maze.Grid.Length;
-            objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
-
-            for (int row = 0; row < maze.Grid.Length; row++)
-            {
-                for (int col = 0; col < maze.Grid[row].Length; col++)
-                {
-                    paintMazeObject(row, col, maze.Grid[row][col]);
-                }
-            }
         }
         // Generate random x and y coord and display them at the window title
         private void timerTick(Object sender, EventArgs e)
@@ -112,7 +98,26 @@ namespace MazeRunner
             string[] tempFileName = openDlg.FileName.Split('\\');
             fileName = tempFileName[tempFileName.Length - 1];
 
-            FileNameText.AppendText(fileName); 
+            FileNameText.Clear();
+            FileNameText.AppendText(fileName);
+
+            string[] file = System.IO.File.ReadAllLines("../../res/" + fileName);
+
+            Graph maze = new Graph(file);
+            // Set the scaling of the rectangles
+            objectHeight = MazeCanvas.Height / maze.Grid.Length;
+            objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
+            // Remove all previous elements and reset the object index
+            MazeCanvas.Children.Clear();
+            objectIndex = 0;
+            // Draw all the maze objects
+            for (int row = 0; row < maze.Grid.Length; row++)
+            {
+                for (int col = 0; col < maze.Grid[row].Length; col++)
+                {
+                    paintMazeObject(row, col, maze.Grid[row][col]);
+                }
+            }
         }
     }
 }
