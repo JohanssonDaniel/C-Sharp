@@ -35,6 +35,8 @@ namespace MazeRunner
         double objectWidth = 1;
 
         string fileName = "";
+
+        Graph maze = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -52,6 +54,42 @@ namespace MazeRunner
             int x = rnd.Next(0,9);
             int y = rnd.Next(0,9);
             this.Title = "x:" + x.ToString() + "y:" + y.ToString(); 
+        }
+        // Open file and retrieve filename with .Split
+        private void buttonOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openDlg = new OpenFileDialog();
+            openDlg.ShowDialog();
+            // The openDlg.FileName will show the complete file path
+            // The string is split and the filename is retrieved from the end of the list
+            string[] tempFileName = openDlg.FileName.Split('\\');
+            fileName = tempFileName[tempFileName.Length - 1];
+
+            FileNameText.Clear();
+            FileNameText.AppendText(fileName);
+
+            string[] file = System.IO.File.ReadAllLines("../../res/" + fileName);
+            updateMaze(file);
+        }
+        // Redraws the maze with the content of the file
+        private void updateMaze(string[] file)
+        {
+            // Init the maze
+            maze = new Graph(file);
+            // Set the scaling of the rectangles
+            objectHeight = MazeCanvas.Height / maze.Grid.Length;
+            objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
+            // Remove all previous elements and reset the object index
+            MazeCanvas.Children.Clear();
+            objectIndex = 0;
+            // Draw all the maze objects
+            for (int row = 0; row < maze.Grid.Length; row++)
+            {
+                for (int col = 0; col < maze.Grid[row].Length; col++)
+                {
+                    paintMazeObject(row, col, maze.Grid[row][col]);
+                }
+            }
         }
         // Draws an inputed object in the maze
         // Every object is represented by a rectangle
@@ -75,11 +113,11 @@ namespace MazeRunner
                     break;
                 case '#':
                     rectangle.Fill = Brushes.Black;
-                    break;   
+                    break;
                 default:
                     break;
             }
-            
+
             rectangle.Height = objectHeight;
             rectangle.Width = objectWidth;
 
@@ -87,37 +125,6 @@ namespace MazeRunner
             Canvas.SetLeft(rectangle, x * objectWidth);
 
             MazeCanvas.Children.Insert(objectIndex++, rectangle);
-        }
-        // Open file and retrieve filename with .Split
-        private void buttonOpen_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openDlg = new OpenFileDialog();
-            openDlg.ShowDialog();
-            // The openDlg.FileName will show the complete file path
-            // The string is split and the filename is retrieved from the end of the list
-            string[] tempFileName = openDlg.FileName.Split('\\');
-            fileName = tempFileName[tempFileName.Length - 1];
-
-            FileNameText.Clear();
-            FileNameText.AppendText(fileName);
-
-            string[] file = System.IO.File.ReadAllLines("../../res/" + fileName);
-
-            Graph maze = new Graph(file);
-            // Set the scaling of the rectangles
-            objectHeight = MazeCanvas.Height / maze.Grid.Length;
-            objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
-            // Remove all previous elements and reset the object index
-            MazeCanvas.Children.Clear();
-            objectIndex = 0;
-            // Draw all the maze objects
-            for (int row = 0; row < maze.Grid.Length; row++)
-            {
-                for (int col = 0; col < maze.Grid[row].Length; col++)
-                {
-                    paintMazeObject(row, col, maze.Grid[row][col]);
-                }
-            }
         }
     }
 }
