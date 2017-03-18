@@ -22,15 +22,22 @@ namespace MazeRunner
     /// </summary>
     public partial class MainWindow : Window
     {
-        Random rnd = new Random();                  // Generate x and y coord 
-        TimeSpan MODERATE = new TimeSpan(0,0,1);    // Update every second
-        int objectIndex = 0;
+        // Generate x and y coord 
+        Random rnd = new Random();
+        // Update every second
+        TimeSpan MODERATE = new TimeSpan(0,0,1);
+        // Gives each drawn object a unique index
+        int objectIndex = 0;                        
+        // Use to scale the rectangles
+        double mazeObjectHeight = 1;                    
+        double mazeObjectWidth = 1;
+
         public MainWindow()
         {
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
             // The timer inits timerTick() as an eventhandler
-            //timer.Tick += new EventHandler(timerTick);
+            timer.Tick += new EventHandler(timerTick);
             // Sets the tick interval and starts the timer
             timer.Interval = MODERATE;
             timer.Start();
@@ -38,6 +45,9 @@ namespace MazeRunner
             string[] file = System.IO.File.ReadAllLines("../../res/maze3.txt");
 
             Graph maze = new Graph(file);
+            // Set the scaling of the rectangles
+            mazeObjectHeight = MazeCanvas.Height / maze.Grid.Length;
+            mazeObjectWidth = MazeCanvas.Width / maze.Grid[0].Length;
 
             for (int row = 0; row < maze.Grid.Length; row++)
             {
@@ -54,6 +64,9 @@ namespace MazeRunner
             int y = rnd.Next(0,9);
             this.Title = "x:" + x.ToString() + "y:" + y.ToString(); 
         }
+        // Draws an inputed object in the maze
+        // Every object is represented by a rectangle
+        // The rectangle's color corresponds to which maze object it is
         private void paintMazeObject(int y, int x, char mazeObject)
         {
             Rectangle rectangle = new Rectangle();
@@ -78,11 +91,11 @@ namespace MazeRunner
                     break;
             }
             
-            rectangle.Height = 10;
-            rectangle.Width = 10;
+            rectangle.Height = mazeObjectHeight;
+            rectangle.Width = mazeObjectWidth;
 
-            Canvas.SetTop(rectangle, y * 10);
-            Canvas.SetLeft(rectangle, x * 10);
+            Canvas.SetTop(rectangle, y * mazeObjectHeight);
+            Canvas.SetLeft(rectangle, x * mazeObjectWidth);
 
             MazeCanvas.Children.Insert(objectIndex++, rectangle);
         }
