@@ -33,6 +33,7 @@ namespace MazeRunner
             // Sets the tick interval and starts the timer
             timer.Interval = MODERATE;
             timer.Start();
+            paintMazeObject();
         }
         // Generate random x and y coord and display them at the window title
         private void timerTick(Object sender, EventArgs e)
@@ -41,9 +42,18 @@ namespace MazeRunner
             int y = rnd.Next(0,9);
             this.Title = "x:" + x.ToString() + "y:" + y.ToString(); 
         }
-        private void paintMazeObject(int x, int y)
+        private void paintMazeObject()
         {
+            Rectangle rectangle = new Rectangle();
 
+            rectangle.Fill = Brushes.Black;
+            rectangle.Height = 10;
+            rectangle.Width = 10;
+
+            Canvas.SetTop(rectangle, 10);
+            Canvas.SetLeft(rectangle, 10);
+
+            MazeCanvas.Children.Insert(0, rectangle);
         }
     }
 }
