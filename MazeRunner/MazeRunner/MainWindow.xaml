@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MazeRunner"
         mc:Ignorable="d"
         Title="MazeRunner" Height="600" Width="800" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
-    <Grid Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}">
+    <Grid Background="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -15,8 +15,11 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Canvas Grid.Row="0" Grid.Column="0" x:Name="MazeCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" Margin="25,75,0,75" Height="450" Width="450"/>
-        <Button Grid.Column="1" x:Name="buttonOpen" Content="Open file" HorizontalAlignment="Left" Margin="0,75,0,0" VerticalAlignment="Top" Width="200" Click="buttonOpen_Click" FontSize="24"/>
-        <TextBox x:Name="FileNameText" Grid.Column="1" Height="23" Margin="0,177,2,0" TextWrapping="Wrap" Width="282" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-        <Label x:Name="label" Content="Currently open file" Grid.Column="1" HorizontalAlignment="Left" Margin="0,116,0,0" VerticalAlignment="Top" Width="282" FontSize="24" Background="{x:Null}"/>
+        <Button Grid.Column="1" x:Name="buttonOpen" Content="Open file" Margin="0,100,0,0" VerticalAlignment="Top" Click="buttonOpen_Click" FontSize="16" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" HorizontalAlignment="Left" Width="140" Height="30"/>
+        <TextBox x:Name="FileNameText" Grid.Column="1" Height="25" Margin="150,150,25,0" TextWrapping="Wrap" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16"/>
+        <Label x:Name="OpenFileLabel" Content="Currently open file: " Grid.Column="1" Margin="0,150,0,0" VerticalAlignment="Top" FontSize="16" Background="{x:Null}" HorizontalAlignment="Left" Height="30" Width="150"/>
+        <Button x:Name="SolveButton" Content="Solve the maze" Grid.Column="1" Margin="0,200,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" BorderThickness="1" FontSize="16" HorizontalAlignment="Left" Click="SolveButton_Click" Width="140" Height="30"/>
+        <Label x:Name="labelCost" Content="Cost: " Grid.Column="1" HorizontalAlignment="Left" Margin="0,250,0,0" VerticalAlignment="Top" FontSize="16" Height="30"/>
+        <TextBox x:Name="CostBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="150,250,25,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
     </Grid>
 </Window>

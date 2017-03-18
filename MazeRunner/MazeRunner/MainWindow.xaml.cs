@@ -37,6 +37,9 @@ namespace MazeRunner
         string fileName = "";
 
         Graph maze = null;
+        int cost = 0;
+        Stack<Node> path = new Stack<Node>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -76,6 +79,9 @@ namespace MazeRunner
         {
             // Init the maze
             maze = new Graph(file);
+            maze.createNodes();
+            maze.createEdges();
+
             // Set the scaling of the rectangles
             objectHeight = MazeCanvas.Height / maze.Grid.Length;
             objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
@@ -125,6 +131,13 @@ namespace MazeRunner
             Canvas.SetLeft(rectangle, x * objectWidth);
 
             MazeCanvas.Children.Insert(objectIndex++, rectangle);
+        }
+
+        private void SolveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Djikstras.Djikstras.findShortestPath(ref maze, ref path, out cost);
+            CostBox.Clear();
+            CostBox.AppendText(cost.ToString());
         }
     }
 }
