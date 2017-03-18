@@ -41,5 +41,9 @@ namespace MazeRunner
             int y = rnd.Next(0,9);
             this.Title = "x:" + x.ToString() + "y:" + y.ToString(); 
         }
+        private void paintMazeObject(int x, int y)
+        {
+
+        }
     }
 }
