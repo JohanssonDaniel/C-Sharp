@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Djikstras;
 using System.Windows.Threading;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace MazeRunner
 {
@@ -29,9 +31,10 @@ namespace MazeRunner
         // Gives each drawn object a unique index
         int objectIndex = 0;                        
         // Use to scale the rectangles
-        double mazeObjectHeight = 1;                    
-        double mazeObjectWidth = 1;
+        double objectHeight = 1;                    
+        double objectWidth = 1;
 
+        string fileName = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -42,12 +45,12 @@ namespace MazeRunner
             timer.Interval = MODERATE;
             timer.Start();
 
-            string[] file = System.IO.File.ReadAllLines("../../res/maze3.txt");
+            string[] file = System.IO.File.ReadAllLines("../../res/maze2.txt");
 
             Graph maze = new Graph(file);
             // Set the scaling of the rectangles
-            mazeObjectHeight = MazeCanvas.Height / maze.Grid.Length;
-            mazeObjectWidth = MazeCanvas.Width / maze.Grid[0].Length;
+            objectHeight = MazeCanvas.Height / maze.Grid.Length;
+            objectWidth = MazeCanvas.Width / maze.Grid[0].Length;
 
             for (int row = 0; row < maze.Grid.Length; row++)
             {
@@ -91,13 +94,25 @@ namespace MazeRunner
                     break;
             }
             
-            rectangle.Height = mazeObjectHeight;
-            rectangle.Width = mazeObjectWidth;
+            rectangle.Height = objectHeight;
+            rectangle.Width = objectWidth;
 
-            Canvas.SetTop(rectangle, y * mazeObjectHeight);
-            Canvas.SetLeft(rectangle, x * mazeObjectWidth);
+            Canvas.SetTop(rectangle, y * objectHeight);
+            Canvas.SetLeft(rectangle, x * objectWidth);
 
             MazeCanvas.Children.Insert(objectIndex++, rectangle);
+        }
+        // Open file and retrieve filename with .Split
+        private void buttonOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openDlg = new OpenFileDialog();
+            openDlg.ShowDialog();
+            // The openDlg.FileName will show the complete file path
+            // The string is split and the filename is retrieved from the end of the list
+            string[] tempFileName = openDlg.FileName.Split('\\');
+            fileName = tempFileName[tempFileName.Length - 1];
+
+            FileNameText.AppendText(fileName); 
         }
     }
 }
