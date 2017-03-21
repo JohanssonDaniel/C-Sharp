@@ -102,7 +102,6 @@ namespace HuffmanEncoding
             {
                 code += "0";
                 EncodingHelper(encodingTree.Zero, code, ref encodingMap);
-                //Remove the added 0 from before
                 code = code.Remove(code.Length - 1);
                 code += "1";
                 EncodingHelper(encodingTree.One, code, ref encodingMap);

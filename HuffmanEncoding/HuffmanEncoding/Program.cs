@@ -13,31 +13,33 @@ namespace HuffmanEncoding
 
         static void Main(string[] args)
         {
-            string option = "";
+            string option   = "";
             string fileName = "";
             string filePath = "";
 
-            List<string> fileNames = new List<string>();
-            List<string> input = new List<string>();
+            List<string> fileNames  = new List<string>();
+            List<string> input      = new List<string>();
 
-            Dictionary<char, int> freqTable = null;
+            HuffmanNode node                       = null;
+            Dictionary<char, int> freqTable        = null;
+            Dictionary<int, string> map            = null;
             List<KeyValuePair<char, int>> freqList = null;
-            HuffmanNode node = null;
-            Dictionary<int, string> map = null;
+
+            fileNames = loadAvailableFiles();
 
             while (!option.Equals("7"))
             {
-                fileNames = loadAvailableFiles();
-                showWelcomeMessage(fileName);
+                printWelcomeMessage(fileName);
 
                 option = readMenuOption();
 
                 switch (option)
                 {
                     case "1":
+                        printFileNames(fileNames);
                         fileName = readFileOption(fileNames);
                         filePath = folderPath + fileName;
-                        input = File.ReadAllLines(filePath).ToList();
+                        input    = File.ReadAllLines(filePath).ToList();
                         break;
                     case "2":
                         if (input.Equals(""))
@@ -47,7 +49,7 @@ namespace HuffmanEncoding
                         else
                         {
                             freqTable = Encoding.BuildFreqTable(input);
-                            freqList = freqTable.ToList();
+                            freqList  = freqTable.ToList();
                             freqList.Sort(
                                             delegate (KeyValuePair<char, int> kvp1,
                                             KeyValuePair<char, int> kvp2)
@@ -76,7 +78,7 @@ namespace HuffmanEncoding
                         }
                         break;
                     case "7":
-                        Console.WriteLine("\nI guess you will forever be trapped in the maze...");
+                        Console.WriteLine("\nGoodbye...");
                         Console.ReadLine();
                         break;
                     default:
@@ -87,14 +89,22 @@ namespace HuffmanEncoding
 
             Console.ReadLine();
         }
-        // Returns all .txt files in the folder
+        
+        /// <summary>
+        /// Retrieve all filenames in folderPath
+        /// </summary>
+        /// <returns>List of available files</returns>
         private static List<string> loadAvailableFiles()
         {
             var temp = Directory.GetFiles(folderPath, "*.txt").Select(Path.GetFileName);
             return temp.ToList();
         }
 
-        private static void showWelcomeMessage(string fileName)
+        /// <summary>
+        /// Welcome the user and display menu and currently selected file
+        /// </summary>
+        /// <param name="fileName">currently selected file</param>
+        private static void printWelcomeMessage(string fileName)
         {
             Console.Clear();
             Console.WriteLine("Current file: {0}", fileName);
@@ -105,36 +115,59 @@ namespace HuffmanEncoding
             Console.WriteLine("4) Build encoding map");
             Console.WriteLine("5) Build encode file");
         }
-        // Prompts the user to select menu option
+        
+        /// <summary>
+        /// Prompt user to select menu option
+        /// </summary>
+        /// <returns>Users option</returns>
         private static string readMenuOption()
         {
             Console.Write("Select option: ");
             return Console.ReadLine();
         }
-        // Prints all the names of .txt files in the folder
-        // Prompts the user to select file
-        private static string readFileOption(List<string> fileNames)
+
+        /// <summary>
+        /// Print all the given fileNames
+        /// </summary>
+        /// <param name="fileNames">List of filenames in folderPath</param>
+        private static void printFileNames(List<string> fileNames)
         {
-            string tempFile = "";
+
             Console.Clear();
             Console.WriteLine("Currently available files\n");
+
             foreach (string fileName in fileNames)
             {
                 Console.WriteLine(fileName);
             }
+
+        }
+
+        /// <summary>
+        /// Prompt user to input a valid filename
+        /// </summary>
+        /// <param name="fileNames">List of all available files</param>
+        /// <returns>name of selected file</returns>
+        private static string readFileOption(List<string> fileNames)
+        {
+            string readFile = "";
+
             Console.WriteLine();
             Console.Write("Select which file you want to compress; ");
-            tempFile = Console.ReadLine();
-            if (fileNames.Contains(tempFile))
+
+            readFile = Console.ReadLine();
+
+            if (fileNames.Contains(readFile))
             {
                 Console.WriteLine("Found it!");
             }
             else
             {
-                Console.WriteLine("Couldn't find the file. Please try again");
+                Console.WriteLine("Couldn't find the file named {0}. Please try again", readFile);
             }
+
             Console.ReadLine();
-            return tempFile;
+            return readFile;
         }
     }
 }
