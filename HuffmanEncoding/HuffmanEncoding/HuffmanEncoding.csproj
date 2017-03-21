@@ -50,6 +50,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="res\allCharsOnce.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="res\ababcab.txt" />
+    <Content Include="res\alphaonce.txt" />
+    <Content Include="res\alphatwice.txt" />
+    <Content Include="res\as.txt" />
+    <Content Include="res\asciiart.txt" />
+    <Content Include="res\bender.jpg" />
+    <Content Include="res\dictionary.txt" />
+    <Content Include="res\empty.txt" />
+    <Content Include="res\example.txt" />
+    <Content Include="res\example2.txt" />
+    <Content Include="res\excellent.wav" />
+    <Content Include="res\fibonacci.txt" />
+    <Content Include="res\hamlet.txt" />
+    <Content Include="res\hellokitty.bmp" />
+    <Content Include="res\large.txt" />
+    <Content Include="res\larger.txt" />
+    <Content Include="res\medium.txt" />
+    <Content Include="res\moo.wav" />
+    <Content Include="res\nonrepeated.txt" />
+    <Content Include="res\output\expected-output-1.txt" />
+    <Content Include="res\output\expected-output-2.txt" />
+    <Content Include="res\output\expected-output-3.txt" />
+    <Content Include="res\output\expected-output-4.txt" />
+    <Content Include="res\output\expected-output-5.txt" />
+    <Content Include="res\output\expected-output-6.txt" />
+    <Content Include="res\output\expected-output-7.txt" />
+    <Content Include="res\output\expected-output-8.txt" />
+    <Content Include="res\poem.txt" />
+    <Content Include="res\short.txt" />
+    <Content Include="res\singlechar.txt" />
+    <Content Include="res\tomsawyer.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

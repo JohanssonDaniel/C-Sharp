@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,10 @@ namespace HuffmanEncoding
     {
         private const char NOT_A_CHAR = ' ';
 
-        //Counts the frequency of all the characters in a string
-        public static Dictionary<char, int> BuildFreqTable(string[] input)
+        //Counts the frequency of all the characters in a string list
+        public static Dictionary<char, int> BuildFreqTable(List<string> input)
         {
             Dictionary<char, int> freqTable = new Dictionary<char, int>();
-
-            //List<char[]> inputAsChar = makeToCharList(input);
 
             foreach (string line in input)
             {
@@ -34,16 +33,26 @@ namespace HuffmanEncoding
             return freqTable;
         }
 
-        private static void EncodeData(string[] input, Dictionary<int, string> map, string filePath)
+        public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
         {
-            foreach (string line in input)
+            Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
+
+            foreach (KeyValuePair<char, int> kvp in freqList)
             {
-                string tempCharacter;
-                foreach (char character in line)
-                {
-                    
-                }
+                HuffmanNode node = new HuffmanNode(kvp.Key, kvp.Value, null, null);
+                treeLevels.Enqueue(node);
             }
+
+            while (treeLevels.Count() != 1)
+            {
+                HuffmanNode left = treeLevels.Dequeue();
+                HuffmanNode right = treeLevels.Dequeue();
+                int sum = left.Count + right.Count;
+                HuffmanNode node = new HuffmanNode(NOT_A_CHAR, sum, left, right);
+
+                treeLevels.Enqueue(node);
+            }
+            return treeLevels.Dequeue();
         }
 
         public static Dictionary<int, string> BuildMap(HuffmanNode encodingTree)
@@ -71,36 +80,17 @@ namespace HuffmanEncoding
             }
         }
 
-        public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
+        public static void EncodeData(List<string> input, Dictionary<int, string> map, FileStream fs)
         {
-            Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
-
-            foreach (KeyValuePair<char, int> kvp in freqList)
-            {
-                HuffmanNode node = new HuffmanNode(kvp.Key, kvp.Value, null, null);
-                treeLevels.Enqueue(node);
-            }
-
-            while (treeLevels.Count() != 1)
-            {
-                HuffmanNode left = treeLevels.Dequeue();
-                HuffmanNode right = treeLevels.Dequeue();
-                int sum = left.Count + right.Count;
-                HuffmanNode node = new HuffmanNode(NOT_A_CHAR, sum, left, right);
-
-                treeLevels.Enqueue(node);
-            }
-            return treeLevels.Dequeue();
-        }
-
-        private static List<char[]> makeToCharList(string[] input)
-        {
-            List<char[]> result = new List<char[]>();
+            string tempCode = "";
             foreach (string line in input)
             {
-                result.Add(line.ToCharArray());
+                string tempCharacter;
+                foreach (char character in line)
+                {
+
+                }
             }
-            return result;
         }
     }
 }
