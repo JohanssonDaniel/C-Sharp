@@ -15,25 +15,28 @@ namespace HuffmanEncoding
         /// <summary>
         /// Count the frequency of all the characters in a string list
         /// </summary>
-        /// <param name="input">List of strings</param>
+        /// <param name="fs">FileStream</param>
         /// <returns>Dictionary where keys = letters in input and 
         /// value = frequency of every key </returns>
-        public static Dictionary<char, int> BuildFreqTable(List<string> input)
+        public static Dictionary<int, int> BuildFreqTable(FileStream fs)
         {
-            Dictionary<char, int> freqTable = new Dictionary<char, int>();
+            Dictionary<int, int> freqTable = new Dictionary<int, int>();
 
-            foreach (string line in input)
+            byte[] bytes = new byte[fs.Length];
+
+            int numBytesToRead = (int)fs.Length;
+
+            fs.Read(bytes, 0, numBytesToRead);
+
+            for (int i = 0; i < bytes.Length; i++)
             {
-                foreach (char letter in line)
+                if (freqTable.ContainsKey(bytes[i]))
                 {
-                    if (freqTable.ContainsKey(letter))
-                    {
-                        freqTable[letter]++;
-                    }
-                    else
-                    {
-                        freqTable.Add(letter, 1);
-                    }
+                    freqTable[i]++;
+                }
+                else
+                {
+                    freqTable.Add(bytes[i], 1);
                 }
             }
             return freqTable;
@@ -48,11 +51,11 @@ namespace HuffmanEncoding
         ///     Returns a tree where the root node is 
         ///     the key (char) with the largest value (frequency)
         /// </returns>
-        public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
+        public static HuffmanNode BuildEncodingTree(List<KeyValuePair<int, int>> freqList)
         {
             Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
 
-            foreach (KeyValuePair<char, int> kvp in freqList)
+            foreach (KeyValuePair<int, int> kvp in freqList)
             {
                 HuffmanNode node = new HuffmanNode(kvp.Key, kvp.Value, null, null);
                 treeLevels.Enqueue(node);

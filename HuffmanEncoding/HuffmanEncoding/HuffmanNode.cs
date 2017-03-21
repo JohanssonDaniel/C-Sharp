@@ -9,12 +9,12 @@ namespace HuffmanEncoding
 {
     class HuffmanNode
     {
-        public char character;
+        public int character;
         public int count;
         public HuffmanNode zero;
         public HuffmanNode one;
 
-        public HuffmanNode(char character, int count, 
+        public HuffmanNode(int character, int count, 
             HuffmanNode zero, HuffmanNode one)
         {
             Character = character;
@@ -23,7 +23,7 @@ namespace HuffmanEncoding
             this.one = one;
         }
 
-        public char Character
+        public int Character
         {
             get { return character;  }
             set { character = value; }

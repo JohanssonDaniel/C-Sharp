@@ -21,9 +21,9 @@ namespace HuffmanEncoding
             List<string> input      = new List<string>();
 
             HuffmanNode node                       = null;
-            Dictionary<char, int> freqTable        = null;
+            Dictionary<int, int> freqTable         = null;
             Dictionary<int, string> map            = null;
-            List<KeyValuePair<char, int>> freqList = null;
+            List<KeyValuePair<int, int>> freqList  = null;
 
             fileNames = loadAvailableFiles();
 
@@ -48,15 +48,18 @@ namespace HuffmanEncoding
                         }
                         else
                         {
-                            freqTable = Encoding.BuildFreqTable(input);
+                            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                            {
+                                freqTable = Encoding.BuildFreqTable(fs);
+                            }
                             freqList  = freqTable.ToList();
                             freqList.Sort(
-                                            delegate (KeyValuePair<char, int> kvp1,
-                                            KeyValuePair<char, int> kvp2)
+                                            delegate (KeyValuePair<int, int> kvp1,
+                                            KeyValuePair<int, int> kvp2)
                                             {
                                                 return kvp1.Value.CompareTo(kvp2.Value);
                                             });
-                            displayFreqList(freqList);
+                            displayFreqTable(freqTable);
                         }
                         break;
                     case "3":
@@ -91,10 +94,10 @@ namespace HuffmanEncoding
             Console.ReadLine();
         }
 
-        private static void displayFreqList(List<KeyValuePair<char, int>> kvpList)
+        private static void displayFreqTable(Dictionary<int, int> freqTable)
         {
             Console.WriteLine("\nFound key => key frequency");
-            foreach (KeyValuePair<char, int> kvp in kvpList)
+            foreach (KeyValuePair<int, int> kvp in freqTable)
             {
                 Console.WriteLine("{0} => {1}", kvp.Key, kvp.Value);
             }
@@ -163,22 +166,28 @@ namespace HuffmanEncoding
         private static string readFileOption(List<string> fileNames)
         {
             string readFile = "";
-
-            Console.WriteLine();
-            Console.Write("Select which file you want to compress; ");
-
-            readFile = Console.ReadLine();
-
-            if (fileNames.Contains(readFile))
+            while (true)
             {
-                Console.WriteLine("Found it!");
-            }
-            else
-            {
-                Console.WriteLine("Couldn't find the file named {0}. Please try again", readFile);
-            }
+                Console.Clear();
+                printFileNames(fileNames);
+                Console.WriteLine();
+                Console.Write("Select which file you want to compress; ");
 
-            Console.ReadLine();
+                readFile = Console.ReadLine();
+
+                if (fileNames.Contains(readFile))
+                {
+                    Console.WriteLine("Found it!");
+                    Console.ReadLine();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Couldn't find the file named {0}. Please try again", readFile);
+                }
+
+                Console.ReadLine();
+            }
             return readFile;
         }
     }
