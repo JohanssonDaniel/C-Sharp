@@ -56,6 +56,7 @@ namespace HuffmanEncoding
                                             {
                                                 return kvp1.Value.CompareTo(kvp2.Value);
                                             });
+                            displayFreqList(freqList);
                         }
                         break;
                     case "3":
@@ -89,7 +90,18 @@ namespace HuffmanEncoding
 
             Console.ReadLine();
         }
-        
+
+        private static void displayFreqList(List<KeyValuePair<char, int>> kvpList)
+        {
+            Console.WriteLine("\nFound key => key frequency");
+            foreach (KeyValuePair<char, int> kvp in kvpList)
+            {
+                Console.WriteLine("{0} => {1}", kvp.Key, kvp.Value);
+            }
+            Console.Write("Press enter to return to menu");
+            Console.ReadLine();
+        }
+
         /// <summary>
         /// Retrieve all filenames in folderPath
         /// </summary>
