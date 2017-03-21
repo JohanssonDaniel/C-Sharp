@@ -11,7 +11,13 @@ namespace HuffmanEncoding
     {
         private const char NOT_A_CHAR = ' ';
 
-        //Counts the frequency of all the characters in a string list
+
+        /// <summary>
+        /// Count the frequency of all the characters in a string list
+        /// </summary>
+        /// <param name="input">List of strings</param>
+        /// <returns>Dictionary where keys = letters in input and 
+        /// value = frequency of every key </returns>
         public static Dictionary<char, int> BuildFreqTable(List<string> input)
         {
             Dictionary<char, int> freqTable = new Dictionary<char, int>();
@@ -33,6 +39,15 @@ namespace HuffmanEncoding
             return freqTable;
         }
 
+        /// <summary>
+        /// Build a binary tree where each node have a key and a value from the frequency list
+        /// The left and right children of a node is the next values in the sorted input freqList
+        /// </summary>
+        /// <param name="freqList">List sorted by the value (descending)</param>
+        /// <returns>
+        ///     Returns a tree where the root node is 
+        ///     the key (char) with the largest value (frequency)
+        /// </returns>
         public static HuffmanNode BuildEncodingTree(List<KeyValuePair<char, int>> freqList)
         {
             Queue<HuffmanNode> treeLevels = new Queue<HuffmanNode>();
@@ -55,6 +70,12 @@ namespace HuffmanEncoding
             return treeLevels.Dequeue();
         }
 
+        /// <summary>
+        /// Create an encoding dictionary by calling the recursive endocing helper
+        /// </summary>
+        /// <param name="encodingTree">Binary tree with Huffman-nodes</param>
+        /// <returns>Dictionary were the key is the character that is encoded 
+        /// and the value is the string that the key will be replaced by</returns>
         public static Dictionary<int, string> BuildMap(HuffmanNode encodingTree)
         {
             Dictionary<int, string> encodingMap = new Dictionary<int, string>();
@@ -63,7 +84,15 @@ namespace HuffmanEncoding
             return encodingMap;
         }
 
-        private static void EncodingHelper(HuffmanNode encodingTree, string code, ref Dictionary<int, string> encodingMap)
+        /// <summary>
+        /// Traverses the tree and adds a "0" or a "1" to the childs coding depending which
+        /// side (left/right) of the parent node it is placed on
+        /// </summary>
+        /// <param name="encodingTree">Binary tree containing Huffman-nodes</param>
+        /// <param name="code">binary string that will represent the coding of a character</param>
+        /// <param name="encodingMap">Dictionary with key as character and value as code</param>
+        private static void EncodingHelper(HuffmanNode encodingTree, string code, 
+                                                ref Dictionary<int, string> encodingMap)
         {
             if (encodingTree.IsLeaf())
             {
