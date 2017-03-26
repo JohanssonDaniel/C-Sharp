@@ -9,42 +9,18 @@ namespace HuffmanEncoding
 {
     class HuffmanNode
     {
-        public int character;
-        public int count;
-        public HuffmanNode zero;
-        public HuffmanNode one;
+        public int Character { get; set; }
+        public int Count { get; set; }
+        public HuffmanNode Zero { get; set; }
+        public HuffmanNode One { get; set; }
 
         public HuffmanNode(int character, int count, 
             HuffmanNode zero, HuffmanNode one)
         {
             Character = character;
             Count = count;
-            this.zero = zero;
-            this.one = one;
-        }
-
-        public int Character
-        {
-            get { return character;  }
-            set { character = value; }
-        }
-
-        public int Count
-        {
-            get { return count; }
-            set { count = value; }
-        }
-
-        public HuffmanNode Zero
-        {
-            get { return zero; }
-            set { zero = value; }
-        }
-
-        public HuffmanNode One
-        {
-            get { return one; }
-            set { one = value; }
+            Zero = zero;
+            One = one;
         }
 
         public bool IsLeaf()
@@ -52,10 +28,17 @@ namespace HuffmanEncoding
             return Zero == null && One == null;
         }
 
-        public void printNode()
+        public override string ToString()
         {
-            Console.WriteLine($"Character: {Character}");
-            Console.WriteLine($"Count: {Count}");
+            switch (Character)
+            {
+                case 257:
+                    return "{Character: NOT, Count: " + Count + "}";
+                case 256:
+                    return "{Character: EOF, Count: " + Count + "}";
+                default:
+                    return "{Character: '" + (char)Character + "', Count: " + Count + "}";
+            }
         }
     }
 }

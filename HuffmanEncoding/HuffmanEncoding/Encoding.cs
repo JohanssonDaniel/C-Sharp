@@ -9,8 +9,8 @@ namespace HuffmanEncoding
 {
     class Encoding
     {
-        private const char NOT_A_CHAR = ' ';
-
+        private const int NOT_A_CHAR = 257;
+        private const int PSEUDO_EOF = 256;
 
         /// <summary>
         /// Count the frequency of all the characters in a string list
@@ -20,23 +20,22 @@ namespace HuffmanEncoding
         /// value = frequency of every key </returns>
         public static Dictionary<int, int> BuildFreqTable(FileStream fs)
         {
-            Dictionary<int, int> freqTable = new Dictionary<int, int>();
-
+            Dictionary<int, int> freqTable = new Dictionary<int, int> {{PSEUDO_EOF, 1}};
             byte[] bytes = new byte[fs.Length];
 
             int numBytesToRead = (int)fs.Length;
 
             fs.Read(bytes, 0, numBytesToRead);
 
-            for (int i = 0; i < bytes.Length; i++)
+            foreach (byte tempByte in bytes)
             {
-                if (freqTable.ContainsKey(bytes[i]))
+                if (freqTable.ContainsKey(tempByte))
                 {
-                    freqTable[i]++;
+                    freqTable[tempByte]++;
                 }
                 else
                 {
-                    freqTable.Add(bytes[i], 1);
+                    freqTable.Add(tempByte, 1);
                 }
             }
             return freqTable;
@@ -63,10 +62,10 @@ namespace HuffmanEncoding
 
             while (treeLevels.Count() != 1)
             {
-                HuffmanNode left = treeLevels.Dequeue();
+                HuffmanNode left  = treeLevels.Dequeue();
                 HuffmanNode right = treeLevels.Dequeue();
-                int sum = left.Count + right.Count;
-                HuffmanNode node = new HuffmanNode(NOT_A_CHAR, sum, left, right);
+                int sum           = left.Count + right.Count;
+                HuffmanNode node  = new HuffmanNode(NOT_A_CHAR, sum, left, right);
 
                 treeLevels.Enqueue(node);
             }
@@ -111,17 +110,35 @@ namespace HuffmanEncoding
             }
         }
 
-        public static void EncodeData(List<string> input, Dictionary<int, string> map, FileStream fs)
+        public static void EncodeData(FileStream fs, Dictionary<int, string> map, FileStream fsNew)
         {
-            string tempCode = "";
-            foreach (string line in input)
-            {
-                string tempCharacter;
-                foreach (char character in line)
-                {
+            byte[] bytes = new byte[fs.Length];
+            byte inputByte = 0;
+            int timesShifted = 0;
+            int numBytesToRead = (int)fs.Length;
 
+            fs.Read(bytes, 0, numBytesToRead);
+
+            foreach (byte tempByte in bytes)
+            {
+                string tempCode = map[tempByte];
+                foreach (char bit in tempCode)
+                {
+                    inputByte <<= 1;
+                    timesShifted++;
+
+                    if (bit.Equals('1'))
+                    {
+                        inputByte |= 0x1;
+                    }
+
+                    if (timesShifted != 8) continue;
+                    fsNew.WriteByte(inputByte);
+
+                    timesShifted = 0;
+                    inputByte = 0;
                 }
-            }
+            } 
         }
     }
 }
