@@ -1,0 +1,28 @@
+﻿<Window x:Class="NoiseGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NoiseGUI"
+        mc:Ignorable="d"
+        Title="Wave Generator" Height="400" Width="300">
+    <Grid>
+        <TextBlock x:Name="FileBlock" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Save WAV file to:" VerticalAlignment="Top"/>
+        <TextBox x:Name="FileBox" HorizontalAlignment="Left" Height="23" Margin="10,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="270"/>
+        <Button x:Name="OpenButton" Content="Browse..." HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="100" Click="OpenButton_Click"/>
+        <TextBlock x:Name="WaveTypeBlock" HorizontalAlignment="Left" Margin="10,120,0,0" TextWrapping="Wrap" Text="Wave Type" VerticalAlignment="Top"/>
+        <ComboBox x:Name="WaveTypeCombo" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="270" SelectedIndex="0">
+            <ListBoxItem Content="Sawtooth" ContentStringFormat=""/>
+            <ListBoxItem Content="Sine"/>
+            <ListBoxItem Content="Square"/>
+            <ListBoxItem Content="Triangle"/>
+            <ListBoxItem Content="White Noise"/>
+        </ComboBox>
+        <TextBlock x:Name="FreqBox" HorizontalAlignment="Left" Margin="10,180,0,0" TextWrapping="Wrap" Text="Frequency (Hz): " VerticalAlignment="Top"/>
+        <Slider x:Name="FreqSlider" HorizontalAlignment="Left" Margin="10,200,0,10" VerticalAlignment="Top" Width="270" SmallChange="1" TickPlacement="BottomRight" Cursor="Hand" Minimum="0" Maximum="800" TickFrequency="10" LargeChange="10" ValueChanged="FreqSlider_ValueChanged"/>
+        <TextBlock x:Name="VolumeBlock" HorizontalAlignment="Left" Margin="10,240,0,0" TextWrapping="Wrap" Text="Volume:" VerticalAlignment="Top"/>
+        <Slider x:Name="VolumeSlider" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="270" SmallChange="1" TickPlacement="BottomRight" Cursor="Hand" Maximum="100" LargeChange="10" TickFrequency="10" ValueChanged="VolumeSlider_ValueChanged"/>
+        <Button x:Name="GenerateButton" Content="Generate Wave" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="auto" Click="GenerateButton_Click"/>
+        <Button x:Name="MelodyButton" Content="Generate Melody" HorizontalAlignment="Left" Margin="185,300,0,0" VerticalAlignment="Top" Width="auto" Click="MelodyButton_Click"/>
+    </Grid>
+</Window>
