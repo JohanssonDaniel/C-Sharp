@@ -6,19 +6,19 @@ namespace Sorting_with_C_sharp
         public static List<int> Sort(List<int> a) {
             for (int i = 0; i < a.Count - 1; i++)
             {
-                int minVal = i;
+                int minI = i;
                 for (int j = i+1; j < a.Count; j++)
                 {
-                    if (a[j] < a[minVal])
+                    if (a[j] < a[minI])
                     {
-                        minVal = j;
+                        minI = j;
                     }
                 }
-                if (minVal != i)
+                if (minI != i)
                 {
                     int temp = a[i];
-                    a[i] = a[minVal];
-                    a[minVal] = temp;
+                    a[i] = a[minI];
+                    a[minI] = temp;
                 }
             }
             return a;

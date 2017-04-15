@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Djikstras
 {
-    class Djikstras
+    public class Djikstras
     {
         public static void findShortestPath(ref Graph graph, ref Stack<Node> path, out int cost)
         {

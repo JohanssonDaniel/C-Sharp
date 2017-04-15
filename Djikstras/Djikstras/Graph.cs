@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Djikstras
 {
-    class Graph
+    public class Graph
     {
         const char WALL     = '#';
         const char START    = 'S';
@@ -23,7 +23,7 @@ namespace Djikstras
             
         public Node Goal { get; set; }
 
-        private char[][] Grid { get; set; }
+        public char[][] Grid { get; set; }
 
         public Graph(string[] file)
         {

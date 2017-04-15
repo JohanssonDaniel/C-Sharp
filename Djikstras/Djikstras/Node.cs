@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Djikstras
 {
-    class Node : IEquatable<Node>
+    public class Node : IEquatable<Node>
     {
         private const int MAXNEIGHBOURS = 4;
 

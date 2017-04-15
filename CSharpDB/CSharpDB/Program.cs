@@ -26,34 +26,33 @@ namespace CSharpDB
                     Console.WriteLine("Connection error...");
                     Console.ReadLine();
                     return;
-                } else
-                {
-                    connection.ConnectionString = connectionString;
-                    connection.Open();
-
-                    DbCommand command = factory.CreateCommand();
-
-                    if (command == null)
-                    {
-                        Console.WriteLine("Command error...");
-                        Console.ReadLine();
-                        return;
-                    }
-
-                    command.Connection = connection;
-
-                    command.CommandText = "Select * From Products";
-
-                    using (DbDataReader dataReader = command.ExecuteReader())
-                    {
-                        while (dataReader.Read())
-                        {
-                            Console.WriteLine($"{dataReader["ProdId"]} {dataReader["Product"]}");
-                        }
-                    }
-
-                    Console.ReadLine();
                 }
+
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                DbCommand command = factory.CreateCommand();
+
+                if (command == null)
+                {
+                    Console.WriteLine("Command error...");
+                    Console.ReadLine();
+                    return;
+                }
+
+                command.Connection = connection;
+
+                command.CommandText = "Select * From Products";
+
+                using (DbDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Console.WriteLine($"{dataReader["ProdId"]} {dataReader["Product"]}");
+                    }
+                }
+
+                Console.ReadLine();
             }
         }
     }

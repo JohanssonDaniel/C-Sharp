@@ -7,113 +7,134 @@ using System.Threading.Tasks;
 
 namespace HuffmanEncoding
 {
-    class Program
+    internal static class Program
     {
-        private const string FolderPath = @"../../res/";
+        private const  string FOLDER_PATH = @"../../res/";
+        private static string _option    = "";
+        private static string _fileName  = "";
+        private static string _filePath  = "";
 
-        static void Main(string[] args)
+        private static List<string> _input;
+        private static HuffmanNode _rootNode;
+        private static List<string> _fileNames;
+        private static Dictionary<int, string> _codingMap;
+        private static List<KeyValuePair<int, int>> _freqList;
+
+        private static void Main(string[] args)
         {
-            string option   = "";
-            string fileName = "";
-            string filePath = "";
-
-            List<string> input = new List<string>();
-
-            HuffmanNode node                       = null;
-            Dictionary<int, string> map            = null;
-            List<KeyValuePair<int, int>> freqList  = null;
-
-            var fileNames = LoadAvailableFiles();
-            while (!option.Equals("7"))
+            LoadAvailableFiles();
+            while (!_option.Equals("7"))
             {
-                PrintWelcomeMessage(fileName);
-
-                option = ReadMenuOption();
-
-                switch (option)
+                PrintWelcomeMessage();
+                ReadMenuOption();
+                switch (_option)
                 {
                     case "1":
-                        PrintFileNames(fileNames);
-                        fileName = ReadFileOption(fileNames);
-                        filePath = FolderPath + fileName;
-                        input    = File.ReadAllLines(filePath).ToList();
+                        ChooseFile();
+                        TryReadFile();
                         break;
                     case "2":
-                        if (!input.Any())
-                        {
-                            Console.WriteLine("Need to select file to encode");
-                        }
-                        else
-                        {
-                            Dictionary<int, int> freqTable = null;
-                            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                            {
-                                freqTable = Encoding.BuildFreqTable(fs);
-                                DisplayFreqTable(freqTable);
-                            }
-                            freqList  = freqTable.ToList();
-                            freqList.Sort(
-                                (kvp1, kvp2) => kvp1.Value.CompareTo(kvp2.Value));
-                            Console.ReadLine();
-                        }
+                        TryBuildFrequencyTable();
+                        DisplayFreqTable();
+                        Console.ReadLine();
                         break;
                     case "3":
-                        if (freqList == null)
-                        {
-                            Console.WriteLine("Need to build frequency table first");
-                        }
-                        else
-                        {
-                            node = Encoding.BuildEncodingTree(freqList);
-                            DisplayEncodingTree(node, "");
-                            Console.Write("Press enter to return to menu");
-                        }
+                        TryBuildEncodingTree();
+                        DisplayEncodingTree(_rootNode, "");
+                        Console.Write("Press enter to return to menu");
                         Console.ReadLine();
                         break;
                     case "4":
-                        if (node == null)
-                        {
-                            Console.WriteLine("Need to build encoding tree first");
-                        }
-                        else
-                        {
-                            map = Encoding.BuildMap(node);
-                            DisplayEncodingMap(map);
-                        }
+                        TryBuildCodingMap();
+                        DisplayEncodingMap();
                         Console.ReadLine();
                         break;
                     case "5":
-                        if (map == null)
-                        {
-                            Console.WriteLine("Need to build encoding map first");
-                        }
-                        else {
-                            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                            {
-                                using (FileStream fsNew = new FileStream(FolderPath + "/output/" + fileName, FileMode.Create))
-                                {
-                                    Encoding.EncodeData(fs, map, fsNew);
-                                }
-                            }
-
-                        }
+                        TryEncodeFile();
                         break;
                     case "7":
                         Console.WriteLine("\nGoodbye...");
-                        Console.ReadLine();
                         break;
                     default:
                         Console.WriteLine("Wrong input...");
                         break;
                 }
             }
-
             Console.ReadLine();
         }
 
-        private static void DisplayEncodingMap(Dictionary<int, string> map)
+        private static void TryEncodeFile()
         {
-            foreach (KeyValuePair<int, string> pair in map)
+            if (_codingMap == null)
+            {
+                Console.WriteLine("Need to build encoding map first");
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (
+                        FileStream fsNew = new FileStream(FOLDER_PATH + "/output/" + _fileName,
+                            FileMode.Create))
+                    {
+                        Encoding.EncodeData(fs, _codingMap, fsNew);
+                    }
+                }
+            }
+        }
+
+        private static void TryBuildCodingMap()
+        {
+            if (_rootNode == null)
+            {
+                Console.WriteLine("Need to build encoding tree first");
+                Console.ReadLine();
+            }
+            else
+            {
+                _codingMap = Encoding.BuildCodingMap(_rootNode);
+            }
+        }
+
+        private static void TryBuildEncodingTree()
+        {
+            if (_freqList == null)
+            {
+                Console.WriteLine("Need to build frequency table first");
+            }
+            else
+            {
+                _rootNode = Encoding.BuildEncodingTree(_freqList);
+            }
+        }
+
+        private static void TryBuildFrequencyTable()
+        {
+            if (!_input.Any())
+            {
+                Console.WriteLine("Need to select file to encode");
+            }
+            else
+            {
+                Dictionary<int, int> freqTable;
+                using (FileStream fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read))
+                {
+                    freqTable = Encoding.BuildFreqTable(fs);
+                }
+                _freqList = freqTable.ToList();
+                _freqList.Sort(
+                    (kvp1, kvp2) => kvp1.Value.CompareTo(kvp2.Value));
+            }
+        }
+
+        private static void TryReadFile()
+        {
+            _input = File.ReadAllLines(_filePath).ToList();
+        }
+
+        private static void DisplayEncodingMap()
+        {
+            foreach (KeyValuePair<int, string> pair in _codingMap)
             {
                 if (pair.Key == 256)
                 {
@@ -137,10 +158,10 @@ namespace HuffmanEncoding
             DisplayEncodingTree(node.Zero, indent + " ");
         }
 
-        private static void DisplayFreqTable(Dictionary<int, int> freqTable)
+        private static void DisplayFreqTable()
         {
             Console.WriteLine("\nFound key => key frequency");
-            foreach (KeyValuePair<int, int> kvp in freqTable)
+            foreach (KeyValuePair<int, int> kvp in _freqList)
             {
                 Console.WriteLine("{0} => {1}", kvp.Key, kvp.Value);
             }
@@ -150,21 +171,17 @@ namespace HuffmanEncoding
         /// <summary>
         /// Retrieve all filenames in folderPath
         /// </summary>
-        /// <returns>List of available files</returns>
-        private static List<string> LoadAvailableFiles()
+        private static void LoadAvailableFiles()
         {
-            var temp = Directory.GetFiles(FolderPath, "*.txt").Select(Path.GetFileName);
-            return temp.ToList();
+            _fileNames = Directory.GetFiles(FOLDER_PATH, "*.txt").Select(Path.GetFileName).ToList();
         }
 
         /// <summary>
         /// Welcome the user and display menu and currently selected file
         /// </summary>
-        /// <param name="fileName">currently selected file</param>
-        private static void PrintWelcomeMessage(string fileName)
+        private static void PrintWelcomeMessage()
         {
             Console.Clear();
-            Console.WriteLine("Current file: {0}", fileName);
             Console.WriteLine("Welcome to my encoding program thas is based on Huffman-encoding");
             Console.WriteLine("1) Select file to encode");
             Console.WriteLine("2) Build frequency table");
@@ -173,65 +190,59 @@ namespace HuffmanEncoding
             Console.WriteLine("5) Build encode file");
             Console.WriteLine("7) Exit program");
         }
-        
+
         /// <summary>
         /// Prompt user to select menu option
         /// </summary>
-        /// <returns>Users option</returns>
-        private static string ReadMenuOption()
+        private static void ReadMenuOption()
         {
             Console.Write("Select option: ");
-            return Console.ReadLine();
+            _option = Console.ReadLine();
         }
 
         /// <summary>
-        /// Print all the given fileNames
+        /// Print all filenames
         /// </summary>
-        /// <param name="fileNames">List of filenames in folderPath</param>
-        private static void PrintFileNames(List<string> fileNames)
+        private static void PrintFileNames()
         {
-
             Console.Clear();
             Console.WriteLine("Currently available files\n");
 
-            foreach (string fileName in fileNames)
+            foreach (string fileName in _fileNames)
             {
                 Console.WriteLine(fileName);
             }
-
         }
 
         /// <summary>
         /// Prompt user to input a valid filename
         /// </summary>
-        /// <param name="fileNames">List of all available files</param>
-        /// <returns>name of selected file</returns>
-        private static string ReadFileOption(List<string> fileNames)
+        private static void ChooseFile()
         {
-            string readFile = "";
             while (true)
             {
                 Console.Clear();
-                PrintFileNames(fileNames);
+
+                PrintFileNames();
+
                 Console.WriteLine();
                 Console.Write("Select which file you want to compress; ");
 
-                readFile = Console.ReadLine();
+                _fileName = Console.ReadLine();
 
-                if (fileNames.Contains(readFile))
+                if (_fileNames.Contains(_fileName))
                 {
                     Console.WriteLine("Found it!");
+                    _filePath = FOLDER_PATH + _fileName;
                     Console.ReadLine();
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Couldn't find the file named {0}. Please try again", readFile);
+                    Console.WriteLine("Couldn't find the file named {0}. Please try again", _fileName);
+                    Console.ReadLine();
                 }
-
-                Console.ReadLine();
             }
-            return readFile;
         }
     }
 }

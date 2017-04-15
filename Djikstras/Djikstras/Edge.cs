@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Djikstras
 {
-    class Edge : IEquatable<Edge>
+    public class Edge : IEquatable<Edge>
     {
         public Node Source { get; set; }
         public Node Destination { get; set; }

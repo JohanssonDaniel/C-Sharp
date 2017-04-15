@@ -78,7 +78,7 @@ namespace HuffmanEncoding
         /// <param name="encodingTree">Binary tree with Huffman-nodes</param>
         /// <returns>Dictionary were the key is the character that is encoded 
         /// and the value is the string that the key will be replaced by</returns>
-        public static Dictionary<int, string> BuildMap(HuffmanNode encodingTree)
+        public static Dictionary<int, string> BuildCodingMap(HuffmanNode encodingTree)
         {
             Dictionary<int, string> encodingMap = new Dictionary<int, string>();
             string code = "";
