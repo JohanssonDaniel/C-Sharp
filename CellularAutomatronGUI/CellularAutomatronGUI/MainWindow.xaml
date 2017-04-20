@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CellularAutomatronGUI"
         mc:Ignorable="d"
-        Title="CellularAutomata" Height="310" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="CellularAutomata" Height="600" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock x:Name="TapeBlock" HorizontalAlignment="Left" Margin="20,20,0,0"  TextWrapping="Wrap" Text="Tape Length"    VerticalAlignment="Top" Width="100" TextAlignment="Center"/>
-        <TextBlock x:Name="RowsBlock" HorizontalAlignment="Left" Margin="140,20,0,0" TextWrapping="Wrap" Text="Number of rows" VerticalAlignment="Top" Width="100" TextAlignment="Center"/>
-        <TextBlock x:Name="RuleBlock" HorizontalAlignment="Left" Margin="260,20,0,0" TextWrapping="Wrap" Text="Rule number"    VerticalAlignment="Top" TextAlignment="Center" Width="100"/>
-        <TextBox x:Name="TapeBox" HorizontalAlignment="Left" Height="23" Margin="20,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="RowsBox" HorizontalAlignment="Left" Height="23" Margin="140,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="RuleBox" HorizontalAlignment="Left" Height="23" Margin="260,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="GenerateButton" Content="Generate" HorizontalAlignment="Left" Margin="140,240,0,0" VerticalAlignment="Top" Width="100"/>
-        <Canvas HorizontalAlignment="Left" Height="140" Margin="20,80,0,0" VerticalAlignment="Top" Width="340"/>
+        <TextBlock x:Name="TapeBlock" HorizontalAlignment="Left" Margin="122,43,0,0"  TextWrapping="Wrap" Text="Tape Length"    VerticalAlignment="Top" Width="164" TextAlignment="Center" Height="26" FontSize="18.667"/>
+        <TextBlock x:Name="RowsBlock" HorizontalAlignment="Left" Margin="319,43,0,0" TextWrapping="Wrap" Text="Number of rows" VerticalAlignment="Top" Width="163" TextAlignment="Center" Height="26" FontSize="18.667"/>
+        <TextBlock x:Name="RuleBlock" HorizontalAlignment="Left" Margin="515,43,0,0" TextWrapping="Wrap" Text="Rule number"    VerticalAlignment="Top" TextAlignment="Center" Width="164" Height="26" FontSize="18.667"/>
+        <TextBox x:Name="TapeBox" HorizontalAlignment="Left" Height="40" Margin="122,75,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" FontSize="18.667" TextAlignment="Justify"/>
+        <TextBox x:Name="RowsBox" HorizontalAlignment="Left" Height="40" Margin="319,75,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="163" FontSize="18.667" TextAlignment="Justify"/>
+        <TextBox x:Name="RuleBox" HorizontalAlignment="Left" Height="40" Margin="515,75,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" FontSize="18.667" TextAlignment="Justify"/>
+        <Button x:Name="GenerateButton" Content="Generate" HorizontalAlignment="Left" Margin="240,500,0,0" VerticalAlignment="Top" Width="320" Click="GenerateButton_Click" Height="40" FontSize="26.667"/>
+        <Canvas x:Name="CellCanvas" HorizontalAlignment="Left" Height="340" Margin="40,140,0,0" VerticalAlignment="Top" Width="720" OpacityMask="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"/>
     </Grid>
 </Window>
