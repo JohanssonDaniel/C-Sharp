@@ -18,6 +18,64 @@ namespace ProcedurallyGeneration
         {
             List<Room> rooms = new List<Room>();
 
+            string[][] printRooms = InitPrintRooms();
+
+            Console.Write("G)enerate new room: ");
+            while (Console.ReadLine().ToLower() == "g" )
+            {
+                rooms.Add(GenerateRoom());
+
+                printRooms = AddToPrintRooms(rooms, printRooms);
+
+                PrintRooms(printRooms);
+                Console.Write("G)enerate new room: ");
+            }
+        }
+
+        private static void PrintRooms(string[][] printRooms)
+        {
+            for (int row = 0; row < YMAX; row++)
+            {
+                for (int col = 0; col < XMAX; col++)
+                {
+                    Console.Write(printRooms[row][col]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static string[][] AddToPrintRooms(List<Room> rooms, string[][] printRooms)
+        {
+            foreach (Room room in rooms)
+            {
+                for (int y = room.Y1; y < room.Y2; y++)
+                {
+                    for (int x = room.X1; x < room.X2; x++)
+                    {
+                        if (x < XMAX && y < YMAX)
+                        {
+                            printRooms[y][x] = " ";
+                        }
+                    }
+                }
+            }
+            return printRooms; 
+        }
+
+        private static Room GenerateRoom()
+        {
+//Create a new random room
+            Random random = new Random();
+            int randomWidth = random.Next(MINROOMSIZE, MAXROOMSIZE);
+            int randomHeight = random.Next(MINROOMSIZE, MAXROOMSIZE);
+            int randomX = random.Next(0, XMAX);
+            int randomY = random.Next(0, YMAX);
+            Room room = new Room(randomWidth, randomHeight, randomX, randomY);
+            return room;
+        }
+
+        private static string[][] InitPrintRooms()
+        {
             string[][] printRooms = new string[YMAX][];
 
             for (int i = 0; i < printRooms.Length; i++)
@@ -28,36 +86,7 @@ namespace ProcedurallyGeneration
                     printRooms[i][j] = "*";
                 }
             }
-
-            //Create a new random room
-            Random random = new Random();
-            int randomWidth = random.Next(MINROOMSIZE, MAXROOMSIZE);
-            int randomHeight = random.Next(MINROOMSIZE, MAXROOMSIZE);
-            int randomX = random.Next(0, XMAX);
-            int randomY = random.Next(0, YMAX);
-
-            rooms.Add(new Room(randomWidth, randomHeight, randomX, randomY));
-
-            foreach (Room room in rooms)
-            {
-                for (int y = room.Y1; y < room.Y2; y++)
-                {
-                    for (int x = room.X1; x < room.X2; x++)
-                    {
-                        printRooms[y][x] = " ";
-                    }  
-                }   
-            }
-
-            for (int row = 0; row < YMAX; row++)
-            {
-                for (int col = 0; col < XMAX; col++)
-                {
-                    Console.Write(printRooms[row][col]);
-                }
-                Console.WriteLine();
-            }
-            Console.Read();
+            return printRooms;
         }
     }
 }
